@@ -56,17 +56,20 @@ public class ConverterUI extends JFrame{
 		contents.add(unit2);
 		
 		contents.add ( convertButton );
-		ActionListener listener = new ConvertButtonListener1();
+		ActionListener listener = new ConvertButtonListener();
 		convertButton.addActionListener( listener );
 		input1.addActionListener( listener );
+		input2.addActionListener( listener );
 		
 		contents.add ( clearButton );
 		listener = new ClearButtonListener();
 		clearButton.addActionListener( listener );
 		
 		bottomPanel.add(radio1);
-		
 		bottomPanel.add(radio2);
+		listener = new RadioButtonListener();
+		radio1.addActionListener( listener );
+		radio2.addActionListener( listener );
 		
 		container.add(contents);
 		container.add(bottomPanel);
@@ -78,17 +81,25 @@ public class ConverterUI extends JFrame{
 		this.setVisible(true);
 	}
 	
-	class ConvertButtonListener1 implements ActionListener {
+	class ConvertButtonListener implements ActionListener {
 		public void actionPerformed( ActionEvent evt ) {
 			String s = input1.getText().trim();
+			if ( radio2.isSelected() == true || evt.getSource() == input2) {
+				s = input2.getText().trim();
+			}
 			//System.out.println("actionPerformed: input=" + s);
 			if ( s.length() > 0 ) {
 				try {
 					double value = Double.valueOf( s );
 					Unit fromUnit = (Unit) unit1.getSelectedItem();
 					Unit toUnit = (Unit) unit2.getSelectedItem();
-					double result = unitconverter.convert(value, fromUnit, toUnit);
-					input2.setText( String.format("%f", result) );
+					if ( radio2.isSelected() == false ) {
+						double result = unitconverter.convert(value, fromUnit, toUnit);
+						input2.setText( String.format("%f", result) );
+					} else {
+						double result = unitconverter.convert(value, toUnit, fromUnit);
+						input1.setText( String.format("%f", result) );
+					}
 				} catch ( Exception e ) {
 					
 				}
@@ -98,7 +109,20 @@ public class ConverterUI extends JFrame{
 	}
 	class ClearButtonListener implements ActionListener {
 		public void actionPerformed( ActionEvent evt ) {
+			input1.setText("");
 			input2.setText("");
+		}
+	}
+	
+	class RadioButtonListener implements ActionListener {
+		public void actionPerformed( ActionEvent ect ) {
+			if ( radio2.isSelected() == true ) {
+				input1.setEditable(false);
+				input2.setEditable(true);
+			} else {
+				input1.setEditable(true);
+				input2.setEditable(false);
+			}
 		}
 	}
 }
