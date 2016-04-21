@@ -8,6 +8,8 @@ public class ConverterUI extends JFrame{
 	private JComboBox<Unit> unit1, unit2;
 	private JLabel equal;
 	private JTextField input1, input2;
+	private ButtonGroup radioGroup;
+	private JRadioButton radio1, radio2;
 	private UnitConverter unitconverter;
 	
 	public ConverterUI( UnitConverter uc ) {
@@ -26,6 +28,11 @@ public class ConverterUI extends JFrame{
 		input1 = new JTextField(7);
 		input2 = new JTextField(7);
 		input2.setEditable(false);
+		radioGroup = new ButtonGroup();
+		radio1 = new JRadioButton("Left->Right");
+		radio2 = new JRadioButton("Right->Left");
+		radioGroup.add(radio1);
+		radioGroup.add(radio2);
 		
 		Unit[] lengths = unitconverter.getUnits();
 		unit1 = new JComboBox<Unit>( lengths );
@@ -35,6 +42,12 @@ public class ConverterUI extends JFrame{
 		JPanel contents = new JPanel();
 		contents.setLayout(new FlowLayout());
 		
+		JPanel container = new JPanel();
+		container.setLayout(new GridLayout(2,0));
+		
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout(new FlowLayout());
+		
 		
 		contents.add(input1);
 		contents.add(unit1);
@@ -43,34 +56,49 @@ public class ConverterUI extends JFrame{
 		contents.add(unit2);
 		
 		contents.add ( convertButton );
-		ActionListener listener = new ConvertButtonListener();
+		ActionListener listener = new ConvertButtonListener1();
 		convertButton.addActionListener( listener );
+		input1.addActionListener( listener );
 		
 		contents.add ( clearButton );
+		listener = new ClearButtonListener();
+		clearButton.addActionListener( listener );
 		
-		this.add(contents);
+		bottomPanel.add(radio1);
+		
+		bottomPanel.add(radio2);
+		
+		container.add(contents);
+		container.add(bottomPanel);
+		
+		this.add(container);
 	}
 	public void run() {
 		this.pack();
 		this.setVisible(true);
 	}
 	
-	class ConvertButtonListener implements ActionListener {
+	class ConvertButtonListener1 implements ActionListener {
 		public void actionPerformed( ActionEvent evt ) {
 			String s = input1.getText().trim();
-			System.out.println("actionPerformed: input=" + s);
+			//System.out.println("actionPerformed: input=" + s);
 			if ( s.length() > 0 ) {
 				try {
 					double value = Double.valueOf( s );
 					Unit fromUnit = (Unit) unit1.getSelectedItem();
 					Unit toUnit = (Unit) unit2.getSelectedItem();
 					double result = unitconverter.convert(value, fromUnit, toUnit);
-					input2.setText( String.format("%.2f", result) );
+					input2.setText( String.format("%f", result) );
 				} catch ( Exception e ) {
 					
 				}
 			} 
 			
+		}
+	}
+	class ClearButtonListener implements ActionListener {
+		public void actionPerformed( ActionEvent evt ) {
+			input2.setText("");
 		}
 	}
 }
