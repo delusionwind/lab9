@@ -3,6 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.*;
 
+/**
+ * the UI format in GUI of the distance converter
+ * @author Napon Kittisiriprasert
+ */
 public class ConverterUI extends JFrame{
 	private JButton convertButton, clearButton;
 	private JComboBox<Unit> unit1, unit2;
@@ -12,6 +16,10 @@ public class ConverterUI extends JFrame{
 	private JRadioButton radio1, radio2;
 	private UnitConverter unitconverter;
 	
+	/**
+	 * constructor of the UI
+	 * @param uc the unit converter class
+	 */
 	public ConverterUI( UnitConverter uc ) {
 		this.unitconverter = uc;
 		
@@ -20,6 +28,9 @@ public class ConverterUI extends JFrame{
 		initComponents();
 	}
 	
+	/**
+	 * the components of the GUI for constructor
+	 */
 	private void initComponents() {
 		
 		convertButton = new JButton("Convert!!");
@@ -76,11 +87,18 @@ public class ConverterUI extends JFrame{
 		
 		this.add(container);
 	}
+	/**
+	 * method to be call by the application to run the distance converter
+	 */
 	public void run() {
 		this.pack();
 		this.setVisible(true);
 	}
 	
+	/**
+	 * action listener for convert button and text field enter
+	 * to convert the distance by from the selected format of left to right or right to left
+	 */
 	class ConvertButtonListener implements ActionListener {
 		public void actionPerformed( ActionEvent evt ) {
 			String s = input1.getText().trim();
@@ -107,6 +125,9 @@ public class ConverterUI extends JFrame{
 			
 		}
 	}
+	/**
+	 * action listener for clear button to clear text in both input text field
+	 */
 	class ClearButtonListener implements ActionListener {
 		public void actionPerformed( ActionEvent evt ) {
 			input1.setText("");
@@ -114,6 +135,9 @@ public class ConverterUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * action listener for radio button to switch between conversion format
+	 */
 	class RadioButtonListener implements ActionListener {
 		public void actionPerformed( ActionEvent ect ) {
 			if ( radio2.isSelected() == true ) {

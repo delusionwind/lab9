@@ -1,4 +1,8 @@
 
+/**
+ * sets of Length and its unit
+ * @author Napon Kittisiriprasert
+ */
 public enum Length implements Unit{
 	METER( "Meter", 1.0 ),
 	FOOT( "Foot", 0.3048 ),
@@ -15,6 +19,11 @@ public enum Length implements Unit{
 	
 	public final double value;
 	
+	/**
+	 * constructor
+	 * @param n the name
+	 * @param v the value
+	 */
 	private Length(String n, double v) {
 		name = n;
 		value = v;
